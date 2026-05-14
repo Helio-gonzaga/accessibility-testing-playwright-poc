@@ -6,7 +6,11 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "e2e": "playwright test",
+    "a11y": "playwright test tests/accessibility",
+    "e2e:ui": "playwright test --ui",
+    "e2e:headed": "playwright test --headed"
   },
   "private": true,
   "dependencies": {
@@ -25,7 +29,11 @@
     "@angular-devkit/build-angular": "^19.2.7",
     "@angular/cli": "^19.2.7",
     "@angular/compiler-cli": "^19.2.0",
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.60.0",
     "@types/jasmine": "~5.1.0",
+    "@types/node": "^25.8.0",
+    "axe-core": "^4.11.4",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

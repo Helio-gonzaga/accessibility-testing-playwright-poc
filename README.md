@@ -1,59 +1,242 @@
-# AngularA11yPlaywright
+# Angular Accessibility Testing POC with Playwright and Axe Core
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.7.
+## Sobre a POC
 
-## Development server
+Esta POC (Proof of Concept) foi criada com o objetivo de estudar e validar estratégias modernas de testes automatizados de acessibilidade em aplicações Angular utilizando Playwright e Axe Core.
 
-To start a local development server, run:
+O principal foco deste projeto é simular um cenário muito comum em aplicações enterprise e arquiteturas de microfrontend, onde não existe navegação tradicional utilizando Angular Router. Em vez disso, a aplicação realiza troca de telas dinamicamente utilizando apenas controle de renderização com `ngIf`.
 
-```bash
-ng serve
+A ideia é validar como ferramentas modernas de automação E2E conseguem testar acessibilidade mesmo em aplicações que:
+
+- Não possuem rotas reais
+- Utilizam renderização dinâmica
+- Trabalham com troca de componentes em runtime
+- Simulam navegação através de estados internos
+- Possuem fluxo semelhante a microfrontends corporativos
+
+Além disso, esta POC também serve para explorar:
+
+- Testes automatizados WCAG
+- Integração entre Playwright e Axe Core
+- Testes E2E focados em acessibilidade
+- Navegação por teclado
+- Estrutura semântica HTML
+- Estratégias futuras utilizando MCP + IA para geração automática de testes
+
+---
+
+# Tecnologias utilizadas
+
+- Angular 19
+- Playwright
+- Axe Core
+- TypeScript
+- Reactive Forms
+
+---
+
+# Fluxo da aplicação
+
+A aplicação possui 2 telas principais.
+
+## 1. Tela de formulário
+
+Tela inicial contendo:
+
+- Título e subtítulo
+- Formulário reativo
+- Campos:
+  - Nome
+  - Sobrenome
+  - E-mail
+  - Sexo
+
+- Botão de cadastro
+- Validações acessíveis
+
+### Recursos de acessibilidade implementados
+
+- Labels associados aos inputs
+- Navegação por teclado
+- Focus visível
+- `aria-describedby`
+- `role="status"`
+- Estrutura HTML semântica
+
+---
+
+## 2. Tela de sucesso
+
+Após o envio do formulário:
+
+- O formulário desaparece
+- Uma nova tela é exibida via `ngIf`
+- Exibe mensagem de sucesso
+- Possui botão para retornar ao formulário
+
+Esse fluxo foi criado propositalmente para simular aplicações sem roteamento tradicional.
+
+---
+
+# Estrutura do projeto
+
+```txt
+src/
+ └── app/
+      ├── app.component.html
+      ├── app.component.ts
+      └── app.component.css
+
+tests/
+ └── accessibility/
+      └── home.a11y.spec.ts
+
+playwright-report/
+test-results/
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+# Instalação
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Instalar dependências
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
+---
 
-To build the project run:
+## Instalar navegadores do Playwright
 
 ```bash
-ng build
+npx playwright install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+# Executando a aplicação
 
 ```bash
-ng test
+npm start
 ```
 
-## Running end-to-end tests
+Aplicação disponível em:
 
-For end-to-end (e2e) testing, run:
+```txt
+http://localhost:4200
+```
+
+---
+
+# Executando testes
+
+## Rodar todos os testes E2E
 
 ```bash
-ng e2e
+npm run e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## Rodar somente testes de acessibilidade
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+npm run a11y
+```
+
+---
+
+## Executar testes com navegador visível
+
+```bash
+npm run e2e:headed
+```
+
+---
+
+## Abrir interface visual do Playwright
+
+```bash
+npm run e2e:ui
+```
+
+---
+
+# Scripts disponíveis
+
+```json
+"scripts": {
+  "ng": "ng",
+  "start": "ng serve",
+  "build": "ng build",
+  "watch": "ng build --watch --configuration development",
+  "test": "ng test",
+  "e2e": "playwright test",
+  "a11y": "playwright test tests/accessibility",
+  "e2e:ui": "playwright test --ui",
+  "e2e:headed": "playwright test --headed"
+}
+```
+
+---
+
+# Testes de acessibilidade
+
+Os testes utilizam:
+
+- Playwright para automação E2E
+- Axe Core para análise WCAG automática
+
+Exemplo:
+
+```ts
+const results = await new AxeBuilder({ page }).analyze();
+
+expect(results.violations).toEqual([]);
+```
+
+---
+
+# O que os testes validam
+
+- Inputs sem label
+- Problemas de contraste
+- Estrutura HTML semântica
+- ARIA inválido
+- Navegação por teclado
+- IDs duplicados
+- Problemas de screen reader
+- Botões sem nome acessível
+
+---
+
+# Relatórios
+
+Após execução dos testes:
+
+```bash
+npx playwright show-report
+```
+
+Relatórios ficam em:
+
+```txt
+playwright-report/
+```
+
+---
+
+# Objetivo final
+
+O objetivo desta POC é servir como base para estudos mais avançados relacionados a:
+
+- Acessibilidade
+- WCAG
+- Angular
+- Playwright
+- Automação E2E
+- Microfrontends
+- Fluxos sem roteamento tradicional
+- MCP
+- IA aplicada à geração automática de testes
