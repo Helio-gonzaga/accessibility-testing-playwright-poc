@@ -145,6 +145,16 @@ npm run e2e
 npm run a11y
 ```
 
+Esse comando executa os testes em `tests/accessibility` usando Playwright com Axe Core.
+
+O `playwright.config.ts` já está configurado com:
+
+- `baseURL: http://localhost:4200`
+- `webServer` executando `npm run start`
+- `reuseExistingServer` habilitado fora do CI
+
+Na prática, você pode rodar `npm run a11y` diretamente. O Playwright sobe a aplicação Angular automaticamente caso ela ainda não esteja rodando, ou reutiliza o servidor local existente em `localhost:4200`.
+
 ---
 
 ## Executar testes com navegador visível
@@ -188,6 +198,35 @@ Os testes utilizam:
 - Playwright para automação E2E
 - Axe Core para análise WCAG automática
 
+Arquivo principal:
+
+```txt
+tests/accessibility/home.a11y.spec.ts
+```
+
+## Como rodar
+
+```bash
+npm run a11y
+```
+
+O comando executa a suíte de acessibilidade nos navegadores configurados no Playwright:
+
+- Chromium
+- Firefox
+- WebKit
+
+## O que a suíte atual cobre
+
+- Carregamento da tela inicial do formulário
+- Validação de que o botão `Cadastrar` inicia desabilitado
+- Análise de acessibilidade da tela inicial com Axe
+- Preenchimento do formulário Angular
+- Envio do cadastro
+- Validação da tela de sucesso renderizada via `ngIf`/`@if`
+- Confirmação de que o formulário saiu da tela após o cadastro
+- Análise de acessibilidade da tela de sucesso com Axe
+
 Exemplo:
 
 ```ts
@@ -217,6 +256,12 @@ Após execução dos testes:
 
 ```bash
 npx playwright show-report
+```
+
+O relatório abre em uma URL local parecida com:
+
+```txt
+http://localhost:9323
 ```
 
 Relatórios ficam em:
